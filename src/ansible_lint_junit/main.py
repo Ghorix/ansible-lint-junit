@@ -72,11 +72,11 @@ def main():
                 ET.SubElement(
                     testcase,
                     "failure",
+                    line=line_data['line'],
                     file=line_data['filename'],
-                    line=str(line_data['line']),
                     message=line_data['error'],
                     type="Ansible Lint"
-                ).text = line_data['error']
+                ).text = str("line: " + line_data['line'] + "error: " + line_data['error'])
 
     xml_string = ET.tostring(testsuites, encoding='utf8', method='xml')
     xml_nice = minidom.parseString(xml_string)
