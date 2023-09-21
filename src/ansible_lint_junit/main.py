@@ -45,7 +45,8 @@ def main():
 
     testsuite = ET.SubElement(testsuites, "testsuite", errors=errors_count, failures="0", tests=errors_count, time="0")
 
-    line_regex = re.compile('^(.*?):(\\d+?):\\s(.*)$')
+    line_regex1 = re.compile('^(.*?):(\\d+?:\+d?):\\s(.*)$')
+    line_regex2 = re.compile('^(.*?):(\\d+?):\\s(.*)$')
 
     if 0 == len(ansible_lint_output):
         ET.SubElement(testsuite, "testcase", name="dummy_testcase.py")
@@ -54,7 +55,10 @@ def main():
         for line in ansible_lint_output:
             if 0 < len(line):
 
-                line_match = line_regex.match(line)
+                line_match = line_regex1.match(line)
+                
+                if not line_match:
+                    line_match = line_regex2.match(line)
                 
                 if not line_match:
                     continue
